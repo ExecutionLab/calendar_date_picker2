@@ -105,6 +105,7 @@ class _DatePickerModeToggleButtonState
     }
 
     return Container(
+      // color: Colors.yellow,
       padding: widget.config.centerAlignModePicker == true
           ? EdgeInsets.zero
           : const EdgeInsetsDirectional.only(start: 16, end: 4),

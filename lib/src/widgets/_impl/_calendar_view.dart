@@ -10,8 +10,12 @@ class _CalendarView extends StatefulWidget {
     required this.selectedDates,
     required this.onChanged,
     required this.onDisplayedMonthChanged,
+    required this.currentDisplayedMonthDate,
     Key? key,
   }) : super(key: key);
+
+  ///
+  final DateTime currentDisplayedMonthDate;
 
   /// The calendar configurations
   final CalendarDatePicker2Config config;
@@ -320,47 +324,118 @@ class _CalendarViewState extends State<_CalendarView> {
     final Color controlColor =
         Theme.of(context).colorScheme.onSurface.withOpacity(0.60);
 
+    final dateFormatter = intl.DateFormat('MMM d, y');
+
     return Semantics(
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
-            padding: widget.config.centerAlignModePicker != true
-                ? const EdgeInsetsDirectional.only(start: 16, end: 4)
-                : const EdgeInsetsDirectional.only(start: 8, end: 8),
+            color: Colors.transparent,
+            // padding: widget.config.centerAlignModePicker != true
+            //     ? const EdgeInsetsDirectional.only(start: 16, end: 4)
+            //     : const EdgeInsetsDirectional.only(start: 8, end: 8),
             height: (widget.config.controlsHeight ?? _subHeaderHeight),
+            child: Container(
+              color: Colors.transparent,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  IconButton(
+                    splashRadius: widget.config.dayMaxWidth != null
+                        ? widget.config.dayMaxWidth! * 2 / 3
+                        : null,
+                    icon: widget.config.lastMonthIcon ??
+                        const Icon(Icons.chevron_left),
+                    color: controlColor,
+                    tooltip: _isDisplayingFirstMonth
+                        ? null
+                        : _localizations.previousMonthTooltip,
+                    onPressed:
+                        _isDisplayingFirstMonth ? null : _handlePreviousMonth,
+                  ),
+                  Text(
+                    "Tháng ${widget.currentDisplayedMonthDate.month}",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                    splashRadius: widget.config.dayMaxWidth != null
+                        ? widget.config.dayMaxWidth! * 2 / 3
+                        : null,
+                    icon: widget.config.nextMonthIcon ??
+                        const Icon(Icons.chevron_right),
+                    color: controlColor,
+                    tooltip: _isDisplayingLastMonth
+                        ? null
+                        : _localizations.nextMonthTooltip,
+                    onPressed: _isDisplayingLastMonth ? null : _handleNextMonth,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            color: Colors.transparent,
+            padding: const EdgeInsets.symmetric(vertical: 12),
             child: Row(
-              children: <Widget>[
-                if (widget.config.centerAlignModePicker != true) const Spacer(),
-                IconButton(
-                  splashRadius: widget.config.dayMaxWidth != null
-                      ? widget.config.dayMaxWidth! * 2 / 3
-                      : null,
-                  icon: widget.config.lastMonthIcon ??
-                      const Icon(Icons.chevron_left),
-                  color: controlColor,
-                  tooltip: _isDisplayingFirstMonth
-                      ? null
-                      : _localizations.previousMonthTooltip,
-                  onPressed:
-                      _isDisplayingFirstMonth ? null : _handlePreviousMonth,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 128,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    shape: BoxShape.rectangle,
+                    border: Border.all(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 14),
+                  child: widget.selectedDates.isNotEmpty
+                      ? Text(
+                          dateFormatter.format(widget.selectedDates[0]!),
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        )
+                      : Text(
+                          _focusedDay != null
+                              ? dateFormatter.format(_focusedDay!)
+                              : "",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                 ),
-                if (widget.config.centerAlignModePicker == true) const Spacer(),
-                IconButton(
-                  splashRadius: widget.config.dayMaxWidth != null
-                      ? widget.config.dayMaxWidth! * 2 / 3
-                      : null,
-                  icon: widget.config.nextMonthIcon ??
-                      const Icon(Icons.chevron_right),
-                  color: controlColor,
-                  tooltip: _isDisplayingLastMonth
-                      ? null
-                      : _localizations.nextMonthTooltip,
-                  onPressed: _isDisplayingLastMonth ? null : _handleNextMonth,
+                const Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Text("–"),
+                ),
+                Container(
+                  width: 128,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    shape: BoxShape.rectangle,
+                    border: Border.all(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 14),
+                  child: widget.selectedDates.length > 1
+                      ? Text(
+                          dateFormatter.format(_focusedDay!),
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        )
+                      : const Text(""),
                 ),
               ],
             ),
           ),
-          Expanded(
+          Container(
+            color: Colors.transparent,
+            height: 304,
+            width: 296,
             child: FocusableActionDetector(
               shortcuts: _shortcutMap,
               actions: _actionMap,

@@ -114,6 +114,14 @@ class _DayPickerState extends State<_DayPicker> {
     return result;
   }
 
+  bool isLastDayOfTheMonth(DateTime date) {
+    // Move to the next day
+    DateTime nextDay = DateTime(date.year, date.month, date.day + 1);
+
+    // If the next day is in the next month, then the current day is the last day of the month
+    return nextDay.month != date.month;
+  }
+
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
@@ -252,12 +260,21 @@ class _DayPickerState extends State<_DayPicker> {
             );
 
         if (isDateInBetweenRangePickerSelectedDates) {
-          final rangePickerIncludedDayDecoration = BoxDecoration(
-            color: widget.config.selectedRangeHighlightColor ??
-                (widget.config.selectedDayHighlightColor ??
-                        selectedDayBackground)
-                    .withOpacity(0.15),
-          );
+          var rangePickerIncludedDayDecoration = BoxDecoration(
+              color: widget.config.selectedRangeHighlightColor ??
+                  (widget.config.selectedDayHighlightColor ??
+                          selectedDayBackground)
+                      .withOpacity(0.15),
+              borderRadius: dayToBuild.weekday == DateTime.monday
+                  ? (const BorderRadius.only(
+                      topLeft: Radius.circular(32),
+                      bottomLeft: Radius.circular(32)))
+                  : (dayToBuild.weekday == DateTime.sunday
+                      ? const BorderRadius.only(
+                          topRight: Radius.circular(32),
+                          bottomRight: Radius.circular(32),
+                        )
+                      : null));
 
           if (DateUtils.isSameDay(
             DateUtils.dateOnly(widget.selectedDates[0]),
