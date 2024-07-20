@@ -267,12 +267,12 @@ class _DayPickerState extends State<_DayPicker> {
                       .withOpacity(0.15),
               borderRadius: dayToBuild.weekday == DateTime.monday
                   ? (const BorderRadius.only(
-                      topLeft: Radius.circular(32),
-                      bottomLeft: Radius.circular(32)))
+                      topLeft: Radius.circular(90),
+                      bottomLeft: Radius.circular(90)))
                   : (dayToBuild.weekday == DateTime.sunday
                       ? const BorderRadius.only(
-                          topRight: Radius.circular(32),
-                          bottomRight: Radius.circular(32),
+                          topRight: Radius.circular(90),
+                          bottomRight: Radius.circular(90),
                         )
                       : null));
 

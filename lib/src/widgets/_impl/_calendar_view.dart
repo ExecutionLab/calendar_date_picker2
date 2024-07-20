@@ -400,12 +400,7 @@ class _CalendarViewState extends State<_CalendarView> {
                           dateFormatter.format(widget.selectedDates[0]!),
                           style: Theme.of(context).textTheme.bodyMedium,
                         )
-                      : Text(
-                          _focusedDay != null
-                              ? dateFormatter.format(_focusedDay!)
-                              : "",
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
+                      : const Text(""),
                 ),
                 const Padding(
                   padding: EdgeInsets.all(8),
@@ -424,7 +419,7 @@ class _CalendarViewState extends State<_CalendarView> {
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 14),
                   child: widget.selectedDates.length > 1
                       ? Text(
-                          dateFormatter.format(_focusedDay!),
+                          dateFormatter.format(widget.selectedDates[1]!),
                           style: Theme.of(context).textTheme.bodyMedium,
                         )
                       : const Text(""),
