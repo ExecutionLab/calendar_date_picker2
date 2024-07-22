@@ -17,8 +17,12 @@ class _MonthPicker extends StatefulWidget {
     required this.selectedDates,
     required this.onChanged,
     required this.initialMonth,
+    required this.handleYearChange,
     Key? key,
   }) : super(key: key);
+
+  ///
+  final Function(DateTime value, [bool autoSwitchMode]) handleYearChange;
 
   /// The calendar configurations
   final CalendarDatePicker2Config config;
@@ -130,12 +134,32 @@ class _MonthPickerState extends State<_MonthPicker> {
     }
 
     BoxDecoration? decoration;
+
+    decoration = BoxDecoration(
+      color: Colors.white,
+      border: Border.all(
+        color: const Color(0xFFF0F1F0),
+        width: 1,
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.05), // Shadow color
+          spreadRadius: 2, // How much the shadow spreads
+          blurRadius: 5, // How much the shadow blurs
+          offset: const Offset(0, 1), // The position of the shadow
+        ),
+      ],
+      borderRadius: widget.config.monthBorderRadius ??
+          BorderRadius.circular(decorationHeight / 2),
+    );
+
     if (isSelected) {
       decoration = BoxDecoration(
         color: widget.config.selectedDayHighlightColor ?? colorScheme.primary,
         borderRadius: widget.config.monthBorderRadius ??
             BorderRadius.circular(decorationHeight / 2),
       );
+      itemStyle = itemStyle?.copyWith(color: Colors.white);
     } else if (isCurrentMonth && isMonthSelectable) {
       decoration = BoxDecoration(
         border: Border.all(
@@ -145,6 +169,8 @@ class _MonthPickerState extends State<_MonthPicker> {
             BorderRadius.circular(decorationHeight / 2),
       );
     }
+
+    Locale currentLocale = Localizations.localeOf(context);
 
     Widget monthItem = widget.config.monthBuilder?.call(
           month: month,
@@ -164,8 +190,11 @@ class _MonthPickerState extends State<_MonthPicker> {
                 selected: isSelected,
                 button: true,
                 child: Text(
-                  getLocaleShortMonthFormat(_locale)
-                      .format(DateTime(widget.initialMonth.year, month)),
+                  currentLocale.languageCode == "vi"
+                      ? "Tháng $month"
+                      : getLocaleShortMonthFormat(_locale).format(
+                          DateTime(widget.initialMonth.year, month),
+                        ),
                   style: itemStyle,
                 ),
               ),
@@ -197,29 +226,87 @@ class _MonthPickerState extends State<_MonthPicker> {
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterial(context));
-    return Column(
-      children: <Widget>[
-        Divider(
-          color: widget.config.hideMonthPickerDividers == true
-              ? Colors.transparent
-              : null,
-        ),
-        Expanded(
-          child: GridView.builder(
-            controller: _scrollController,
-            gridDelegate: _monthPickerGridDelegate,
-            itemBuilder: _buildMonthItem,
-            itemCount: 12,
-            padding:
-                const EdgeInsets.symmetric(horizontal: _monthPickerPadding),
+    return Container(
+      color: Colors.transparent,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            color: Colors.transparent,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 24),
+                  child: IconButton(
+                    splashRadius: widget.config.dayMaxWidth != null
+                        ? widget.config.dayMaxWidth! * 2 / 3
+                        : null,
+                    icon: widget.config.lastMonthIcon ??
+                        const Icon(Icons.chevron_left),
+                    onPressed: () => widget.handleYearChange(
+                      DateTime(widget.initialMonth.year - 1),
+                      false,
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {},
+                  child: Text(
+                    "${widget.initialMonth.year}",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 24),
+                  child: IconButton(
+                    splashRadius: widget.config.dayMaxWidth != null
+                        ? widget.config.dayMaxWidth! * 2 / 3
+                        : null,
+                    icon: widget.config.nextMonthIcon ??
+                        const Icon(Icons.chevron_right),
+                    onPressed: () => widget.handleYearChange(
+                      DateTime(widget.initialMonth.year + 1),
+                      false,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        Divider(
-          color: widget.config.hideMonthPickerDividers == true
-              ? Colors.transparent
-              : null,
-        ),
-      ],
+          Divider(
+            color: widget.config.hideMonthPickerDividers == true
+                ? Colors.transparent
+                : null,
+            height: 0,
+            thickness: 0,
+          ),
+          Container(
+            // constraints: const BoxConstraints(
+            //   maxHeight: 248,
+            // ),
+            height: 216,
+            child: GridView.builder(
+              controller: _scrollController,
+              gridDelegate: _monthPickerGridDelegate,
+              itemBuilder: _buildMonthItem,
+              itemCount: 12,
+              // padding:
+              //     const EdgeInsets.symmetric(horizontal: _monthPickerPadding),
+            ),
+          ),
+          Divider(
+            color: widget.config.hideMonthPickerDividers == true
+                ? Colors.transparent
+                : null,
+            height: 0,
+            thickness: 0,
+          ),
+        ],
+      ),
     );
   }
 }

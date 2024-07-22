@@ -192,7 +192,10 @@ class _DayPickerState extends State<_DayPicker> {
           dayColor = widget.config.selectedDayHighlightColor ?? todayColor;
           decoration = BoxDecoration(
             borderRadius: widget.config.dayBorderRadius,
-            border: Border.all(color: dayColor),
+            border: Border.all(
+              color: const Color(0xFFF2F4F7),
+            ),
+            color: const Color(0xFFF2F4F7),
             shape: widget.config.dayBorderRadius != null
                 ? BoxShape.rectangle
                 : BoxShape.circle,
@@ -265,16 +268,17 @@ class _DayPickerState extends State<_DayPicker> {
                   (widget.config.selectedDayHighlightColor ??
                           selectedDayBackground)
                       .withOpacity(0.15),
-              borderRadius: dayToBuild.weekday == DateTime.monday
-                  ? (const BorderRadius.only(
-                      topLeft: Radius.circular(90),
-                      bottomLeft: Radius.circular(90)))
-                  : (dayToBuild.weekday == DateTime.sunday
-                      ? const BorderRadius.only(
-                          topRight: Radius.circular(90),
-                          bottomRight: Radius.circular(90),
-                        )
-                      : null));
+              borderRadius:
+                  dayToBuild.weekday == DateTime.monday && !isSelectedDay
+                      ? (const BorderRadius.only(
+                          topLeft: Radius.circular(90),
+                          bottomLeft: Radius.circular(90)))
+                      : (dayToBuild.weekday == DateTime.sunday && !isSelectedDay
+                          ? const BorderRadius.only(
+                              topRight: Radius.circular(90),
+                              bottomRight: Radius.circular(90),
+                            )
+                          : null));
 
           if (DateUtils.isSameDay(
             DateUtils.dateOnly(widget.selectedDates[0]),
@@ -367,7 +371,6 @@ class _DayPickerState extends State<_DayPicker> {
       ),
       child: GridView.custom(
         padding: EdgeInsets.zero,
-        shrinkWrap: true,
         physics: const ClampingScrollPhysics(),
         gridDelegate: _DayPickerGridDelegate(
           config: widget.config,

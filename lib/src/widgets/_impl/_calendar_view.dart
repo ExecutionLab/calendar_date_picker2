@@ -11,8 +11,12 @@ class _CalendarView extends StatefulWidget {
     required this.onChanged,
     required this.onDisplayedMonthChanged,
     required this.currentDisplayedMonthDate,
+    required this.onMonthPressed,
     Key? key,
   }) : super(key: key);
+
+  ///
+  final Function() onMonthPressed;
 
   ///
   final DateTime currentDisplayedMonthDate;
@@ -351,12 +355,15 @@ class _CalendarViewState extends State<_CalendarView> {
                         _isDisplayingFirstMonth ? null : _handlePreviousMonth,
                   ),
                 ),
-                Text(
-                  "Tháng ${widget.currentDisplayedMonthDate.month}",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.copyWith(fontWeight: FontWeight.bold),
+                GestureDetector(
+                  onTap: widget.onMonthPressed,
+                  child: Text(
+                    "Tháng ${widget.currentDisplayedMonthDate.month}",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 24),
