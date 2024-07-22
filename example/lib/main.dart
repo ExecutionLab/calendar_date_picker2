@@ -1,7 +1,5 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 final today = DateUtils.dateOnly(DateTime.now());
@@ -88,8 +86,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       lastDate: DateTime.now(),
                       calendarViewMode: CalendarDatePicker2Mode.day,
                       firstDayOfWeek: 1,
-                      selectedRangeHighlightColor: Color(0xFFE5EEE7),
-                      selectedDayHighlightColor: Color(0xFF3B6B46),
+                      selectedRangeHighlightColor: const Color(0xFFE5EEE7),
+                      selectedDayHighlightColor: const Color(0xFF3B6B46),
                       weekdayLabelTextStyle:
                           Theme.of(context).textTheme.bodyMedium,
                       dayTextStyle: Theme.of(context).textTheme.bodyMedium,
@@ -112,6 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 const Divider(
                   thickness: 1,
                   height: 0,
+                  color: Color(0xFFE4E7EC),
                 ),
                 const SizedBox(height: 16),
                 Row(
