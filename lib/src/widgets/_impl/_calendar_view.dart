@@ -332,16 +332,12 @@ class _CalendarViewState extends State<_CalendarView> {
         children: <Widget>[
           Container(
             color: Colors.transparent,
-            // padding: widget.config.centerAlignModePicker != true
-            //     ? const EdgeInsetsDirectional.only(start: 16, end: 4)
-            //     : const EdgeInsetsDirectional.only(start: 8, end: 8),
-            height: (widget.config.controlsHeight ?? _subHeaderHeight),
-            child: Container(
-              color: Colors.transparent,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  IconButton(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 24),
+                  child: IconButton(
                     splashRadius: widget.config.dayMaxWidth != null
                         ? widget.config.dayMaxWidth! * 2 / 3
                         : null,
@@ -354,14 +350,17 @@ class _CalendarViewState extends State<_CalendarView> {
                     onPressed:
                         _isDisplayingFirstMonth ? null : _handlePreviousMonth,
                   ),
-                  Text(
-                    "Tháng ${widget.currentDisplayedMonthDate.month}",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
+                ),
+                Text(
+                  "Tháng ${widget.currentDisplayedMonthDate.month}",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 24),
+                  child: IconButton(
                     splashRadius: widget.config.dayMaxWidth != null
                         ? widget.config.dayMaxWidth! * 2 / 3
                         : null,
@@ -373,13 +372,13 @@ class _CalendarViewState extends State<_CalendarView> {
                         : _localizations.nextMonthTooltip,
                     onPressed: _isDisplayingLastMonth ? null : _handleNextMonth,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           Container(
-            color: Colors.transparent,
-            padding: const EdgeInsets.symmetric(vertical: 12),
+            // color: Colors.yellow,
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -390,7 +389,7 @@ class _CalendarViewState extends State<_CalendarView> {
                     borderRadius: BorderRadius.circular(8),
                     shape: BoxShape.rectangle,
                     border: Border.all(
-                      color: Colors.grey,
+                      color: const Color(0xFFD0D5DD),
                     ),
                   ),
                   padding:
@@ -399,6 +398,7 @@ class _CalendarViewState extends State<_CalendarView> {
                       ? Text(
                           dateFormatter.format(widget.selectedDates[0]!),
                           style: Theme.of(context).textTheme.bodyMedium,
+                          textAlign: TextAlign.center,
                         )
                       : const Text(""),
                 ),
@@ -412,7 +412,7 @@ class _CalendarViewState extends State<_CalendarView> {
                     borderRadius: BorderRadius.circular(8),
                     shape: BoxShape.rectangle,
                     border: Border.all(
-                      color: Colors.grey,
+                      color: const Color(0xFFD0D5DD),
                     ),
                   ),
                   padding:
@@ -421,6 +421,7 @@ class _CalendarViewState extends State<_CalendarView> {
                       ? Text(
                           dateFormatter.format(widget.selectedDates[1]!),
                           style: Theme.of(context).textTheme.bodyMedium,
+                          textAlign: TextAlign.center,
                         )
                       : const Text(""),
                 ),
@@ -429,8 +430,8 @@ class _CalendarViewState extends State<_CalendarView> {
           ),
           Container(
             color: Colors.transparent,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             height: 304,
-            width: 296,
             child: FocusableActionDetector(
               shortcuts: _shortcutMap,
               actions: _actionMap,

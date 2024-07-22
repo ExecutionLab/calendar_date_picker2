@@ -367,6 +367,7 @@ class _DayPickerState extends State<_DayPicker> {
       ),
       child: GridView.custom(
         padding: EdgeInsets.zero,
+        shrinkWrap: true,
         physics: const ClampingScrollPhysics(),
         gridDelegate: _DayPickerGridDelegate(
           config: widget.config,
