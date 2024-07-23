@@ -47,6 +47,7 @@ class CalendarDatePicker2 extends StatefulWidget {
     this.onValueChanged,
     this.displayedMonthDate,
     this.onDisplayedMonthChanged,
+    this.onChangeMode,
     Key? key,
   }) : super(key: key) {
     const valid = true;
@@ -87,6 +88,9 @@ class CalendarDatePicker2 extends StatefulWidget {
   /// Called when the displayed month changed
   final ValueChanged<DateTime>? onDisplayedMonthChanged;
 
+  ///
+  final ValueChanged<CalendarDatePicker2Mode>? onChangeMode;
+
   @override
   State<CalendarDatePicker2> createState() => _CalendarDatePicker2State();
 }
@@ -94,7 +98,18 @@ class CalendarDatePicker2 extends StatefulWidget {
 class _CalendarDatePicker2State extends State<CalendarDatePicker2> {
   bool _announcedInitialDate = false;
   late List<DateTime?> _selectedDates;
-  late CalendarDatePicker2Mode _mode;
+
+  late CalendarDatePicker2Mode __mode;
+
+  CalendarDatePicker2Mode get _mode {
+    return __mode;
+  }
+
+  set _mode(CalendarDatePicker2Mode mode) {
+    widget.onChangeMode?.call(mode);
+    __mode = mode;
+  }
+
   late DateTime _currentDisplayedMonthDate;
   final GlobalKey _dayPickerKey = GlobalKey();
   final GlobalKey _monthPickerKey = GlobalKey();

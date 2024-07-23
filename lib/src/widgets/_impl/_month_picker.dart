@@ -285,17 +285,13 @@ class _MonthPickerState extends State<_MonthPicker> {
             thickness: 0,
           ),
           Container(
-            // constraints: const BoxConstraints(
-            //   maxHeight: 248,
-            // ),
+            color: Colors.transparent,
             height: 216,
             child: GridView.builder(
               controller: _scrollController,
               gridDelegate: _monthPickerGridDelegate,
               itemBuilder: _buildMonthItem,
               itemCount: 12,
-              // padding:
-              //     const EdgeInsets.symmetric(horizontal: _monthPickerPadding),
             ),
           ),
           Divider(
