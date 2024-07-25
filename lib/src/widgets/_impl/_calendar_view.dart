@@ -401,7 +401,8 @@ class _CalendarViewState extends State<_CalendarView> {
                   ),
                   padding:
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 14),
-                  child: widget.selectedDates.isNotEmpty
+                  child: widget.selectedDates.isNotEmpty &&
+                          widget.selectedDates[0] != null
                       ? Text(
                           dateFormatter.format(widget.selectedDates[0]!),
                           style: Theme.of(context).textTheme.bodyMedium,
@@ -424,7 +425,8 @@ class _CalendarViewState extends State<_CalendarView> {
                   ),
                   padding:
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 14),
-                  child: widget.selectedDates.length > 1
+                  child: widget.selectedDates.length > 1 &&
+                          widget.selectedDates[1] != null
                       ? Text(
                           dateFormatter.format(widget.selectedDates[1]!),
                           style: Theme.of(context).textTheme.bodyMedium,
