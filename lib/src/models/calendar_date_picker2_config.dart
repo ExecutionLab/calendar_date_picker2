@@ -103,6 +103,7 @@ typedef CalendarSelectableMonthPredicate = bool Function(int year, int month);
 /// Custom configuration for CalendarDatePicker2
 class CalendarDatePicker2Config {
   CalendarDatePicker2Config({
+    Map<int, String>? monthLabels,
     CalendarDatePicker2Type? calendarType,
     DateTime? firstDate,
     DateTime? lastDate,
@@ -169,7 +170,24 @@ class CalendarDatePicker2Config {
         lastDate =
             DateUtils.dateOnly(lastDate ?? DateTime(DateTime.now().year + 50)),
         currentDate = currentDate ?? DateUtils.dateOnly(DateTime.now()),
+        monthLabels = monthLabels ??
+            const {
+              1: "Tháng 1",
+              2: "Tháng 2",
+              3: "Tháng 3",
+              4: "Tháng 4",
+              5: "Tháng 5",
+              6: "Tháng 6",
+              7: "Tháng 7",
+              8: "Tháng 8",
+              9: "Tháng 9",
+              10: "Tháng 10",
+              11: "Tháng 11",
+              12: "Tháng 12",
+            },
         calendarViewMode = calendarViewMode ?? CalendarDatePicker2Mode.day;
+
+  final Map<int, String>? monthLabels;
 
   /// The enabled date picker mode
   final CalendarDatePicker2Type calendarType;
@@ -365,6 +383,7 @@ class CalendarDatePicker2Config {
 
   /// Copy the current [CalendarDatePicker2Config] with some new values
   CalendarDatePicker2Config copyWith({
+    Map<int, String>? monthLabels,
     CalendarDatePicker2Type? calendarType,
     DateTime? firstDate,
     DateTime? lastDate,
@@ -428,6 +447,7 @@ class CalendarDatePicker2Config {
     bool? dynamicCalendarRows,
   }) {
     return CalendarDatePicker2Config(
+      monthLabels: monthLabels ?? this.monthLabels,
       calendarType: calendarType ?? this.calendarType,
       firstDate: DateUtils.dateOnly(firstDate ?? this.firstDate),
       lastDate: DateUtils.dateOnly(lastDate ?? this.lastDate),
@@ -522,6 +542,7 @@ class CalendarDatePicker2Config {
 class CalendarDatePicker2WithActionButtonsConfig
     extends CalendarDatePicker2Config {
   CalendarDatePicker2WithActionButtonsConfig({
+    Map<int, String>? monthLabels,
     CalendarDatePicker2Type? calendarType,
     DateTime? firstDate,
     DateTime? lastDate,
@@ -593,6 +614,7 @@ class CalendarDatePicker2WithActionButtonsConfig
     this.closeDialogOnOkTapped,
     this.buttonPadding,
   }) : super(
+          monthLabels: monthLabels,
           calendarType: calendarType,
           firstDate: firstDate,
           lastDate: lastDate,
@@ -685,6 +707,7 @@ class CalendarDatePicker2WithActionButtonsConfig
 
   @override
   CalendarDatePicker2WithActionButtonsConfig copyWith({
+    Map<int, String>? monthLabels,
     CalendarDatePicker2Type? calendarType,
     DateTime? firstDate,
     DateTime? lastDate,
@@ -757,6 +780,7 @@ class CalendarDatePicker2WithActionButtonsConfig
     bool? dynamicCalendarRows,
   }) {
     return CalendarDatePicker2WithActionButtonsConfig(
+      monthLabels: monthLabels ?? this.monthLabels,
       calendarType: calendarType ?? this.calendarType,
       firstDate: DateUtils.dateOnly(firstDate ?? this.firstDate),
       lastDate: DateUtils.dateOnly(lastDate ?? this.lastDate),

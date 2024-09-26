@@ -358,7 +358,8 @@ class _CalendarViewState extends State<_CalendarView> {
                 GestureDetector(
                   onTap: widget.onMonthPressed,
                   child: Text(
-                    "Tháng ${widget.currentDisplayedMonthDate.month}",
+                    widget.config
+                        .monthLabels![widget.currentDisplayedMonthDate.month]!,
                     style: Theme.of(context)
                         .textTheme
                         .bodyLarge
